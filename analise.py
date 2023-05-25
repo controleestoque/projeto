@@ -346,7 +346,7 @@ if escolha == 'Prazo de Validade':
         col1, col2 = st.columns([1, 2])
 
         # Carregar a base geral para análise
-        base_vencidos = pd.read_excel(r"C:\Users\ezequiaslima\Desktop\projeto de data de validade\Base_dados_vencidos.xlsx")
+        base_vencidos = pd.read_excel(r"C:\Users\ezequiaslima\Desktop\Streamlit\Base_dados_vencidos.xlsx")
         
         # Analisar por fornecedor
         fornecedores = base_vencidos['Fornecedor'].unique().tolist()
