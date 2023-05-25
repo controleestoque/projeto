@@ -398,7 +398,7 @@ if escolha == 'Prazo de Validade':
                 "X4": "%"
             }
         }
-
+        
         response = requests.post(url, headers=headers, json=body)
         excel_data = response.content
         
@@ -739,3 +739,26 @@ if escolha == 'Analise de Estoque':
 
             # Exibir o gráfico no Streamlit
             st.plotly_chart(fig)
+            
+
+
+
+
+
+    
+    
+    
+    
+
+
+
+
+
+
+        
+        
+    
+    
+    
+    
+    
