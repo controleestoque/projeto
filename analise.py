@@ -344,14 +344,41 @@ if escolha == 'Prazo de Validade':
         st.markdown('Pagina para análise de itens vencidos!')
         
         col1, col2 = st.columns([1, 2])
-
+        
+        # Ler o arquivo Excel diretamente a partir dos dados retornados pela API
+                                ## api abaixo##
+        url = "https://api-dw.bseller.com.br/webquery/execute-excel/QRY0156"
+        
+        headers = {
+            "Content-Type": "application/json",
+            "X-Auth-Token": "746E4AA1FE7A85BCE053A7F3A8C0AAED"
+        }
+        body = {
+            "parametros": {
+                "FORNEC": 0,
+                "GRCL": "%",
+                "P_ID_PLANTA": "MECAJ",
+                "RESTR": "65",
+                "X1": "QBR",
+                "X2": "VCT",
+                "X3": "000",
+                "X4": "NGC"
+            }
+        }
+        
+        response = requests.post(url, headers=headers, json=body)
+        excel_data = response.content
+        
+        # Ler o arquivo Excel diretamente a partir dos dados retornados pela API
+        df_venc_analise = pd.read_excel(BytesIO(excel_data))
+        
         # Carregar a base geral para análise
         base_vencidos = pd.read_excel(r"C:\Users\ezequiaslima\Desktop\Streamlit\Base_dados_vencidos.xlsx")
         
         # Analisar por fornecedor
-        fornecedores = base_vencidos['Fornecedor'].unique().tolist()
+        fornecedores = df_venc_analise['Fornecedor'].unique().tolist()
         fornecedor_selecionado = st.selectbox('Selecione um fornecedor para filtrar:', fornecedores)
-        base_filtrada = base_vencidos[base_vencidos['Fornecedor'] == fornecedor_selecionado]
+        base_filtrada = df_venc_analise[df_venc_analise['Fornecedor'] == fornecedor_selecionado]
         
         st.write(base_filtrada)
             
@@ -481,21 +508,21 @@ if escolha == 'Prazo de Validade':
 
             st.success("Dados enviados com sucesso!")
                 
-            form = pd.read_excel(r"C:\Users\ezequiaslima\Desktop\Streamlit\dados.xlsx")
+            #form = pd.read_excel(r"C:\Users\ezequiaslima\Desktop\Streamlit\dados.xlsx")
         
-            fornecedores_form = form['Status da Negociação'].unique().tolist()
-            form_select = st.selectbox('Selecione o status para filtrar:', fornecedores_form)
-            base_filtrada_form = form[form['Status da Negociação'] == form_select]
+            #fornecedores_form = form['Status da Negociação'].unique().tolist()
+            #form_select = st.selectbox('Selecione o status para filtrar:', fornecedores_form)
+            #base_filtrada_form = form[form['Status da Negociação'] == form_select]
             
-            st.write(base_filtrada_form)
+            #st.write(base_filtrada_form)
             
             #### Verificar valor #####
-            Pendente = st.checkbox("Verificar o valor?")
+            #Pendente = st.checkbox("Verificar o valor?")
             
-            if Pendente:
-                validar_valor = base_filtrada_form[['Valor Total']].sum()
+            #if Pendente:
+                #validar_valor = base_filtrada_form[['Valor Total']].sum()
                 
-                st.write(validar_valor)
+                #st.write(validar_valor)
                 
             
                     
